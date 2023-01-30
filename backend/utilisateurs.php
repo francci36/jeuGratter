@@ -38,11 +38,9 @@ include('inc/header.php');
                 <h3 class="card-title">Liste  des utilisateurs</h3>
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
                     <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
+                      <button type="button" class="btn btn-default" name="btn_user" id="btn_user">
+                        Ajouter un utilisateur
                       </button>
                     </div>
                   </div>
@@ -54,7 +52,6 @@ include('inc/header.php');
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>Nom</th>
                       <th>Nom</th>
                       <th>prénom</th>
                       <th>email</th>
@@ -79,7 +76,10 @@ include('inc/header.php');
                             echo '<td>'.$user->client_prenom.'</td>';
                             echo '<td>'.$user->client_email.'</td>';
                             echo '<td>'.$user->client_credit.'</td>';
-                            echo'<td/></td>';
+                            echo'<td/>';
+                            echo '<button type="button" class="btn btn-primary editUser" name="edit" data-id="'.$user->client_id.'">Modifier</button>';
+                            echo '<button name="del" class="btn btn-danger delUser" data-id="'.$user->client_id.'">Supprimer</button>';
+                            echo'<td/>';
                             echo'</tr>';
                 
                             }
@@ -95,7 +95,64 @@ include('inc/header.php');
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
+
           </div>
+          <!--Formulaire d'ajout d'édition-->
+          <div class="col-12" id="div_user" <?php if(!empty($_SESSION['form_utilisateur'])) echo 'class= "affiche"';?>>
+             <!-- general form elements -->
+             <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Ajouter/éditeur un utilisateur</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <?php
+
+              if(!empty($_SESSION['form_utilisateur']))
+              {
+                // on va desearialiser notre sesssion
+                $utilisateur = unserialize($_SESSION['form_utilisateur']);
+              }
+              else{
+                // si la session est vide on initialise la variable utilisateur vide
+                $utilisateur = '';
+              }
+
+              ?>
+              <form name="utilisateur" method="post" action="<?php if(!empty($utilisateur)) echo 'action.php?e=ajoutUser'; ?>" id="form_utilisateur">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="email" value="<?php if(!empty($utilisateur ['email'])) echo strip_tags($utilisateur['email']);?>">
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  </div>
+                          <div class="form-group">
+                            <label for="nom">Nom</label>
+                            <input type="text" class="form-control" id="nom" name="nom" placeholder="nom" value="<?php if(!empty($utilisateur ['nom']))  echo strip_tags( $utilisateur['nom']);?>">
+                          </div>
+                          <div class="form-group">
+                            <label for="prenom">Prenom</label>
+                            <input type="text" class="form-control" id="prenom" name="prenom" placeholder="prénom" value="<?php if(!empty($utilisateur ['prenom'])) echo strip_tags( $utilisateur['prenom']);?>">
+                          </div>
+                          <div class="form-group">
+                            <label for="credit">Crédit</label>
+                            <input type="number" class="form-control" id="credit" name="credit" value="<?php if(!empty($utilisateur ['credit'])) echo strip_tags( $utilisateur['credit']);?>">
+                          </div>
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary" name="submit">Envoyer</button>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- fin de formulaire d'ajout d'édition-->
         </div>
         <!-- /.row -->
 

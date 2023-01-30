@@ -24,6 +24,8 @@
 <script src="../assets/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../assets/js/pages/dashboard3.js"></script>
+<!--js personalisé-->
+<script src="../assets/js/backend.js"></script>
 </body>
 </html>
 

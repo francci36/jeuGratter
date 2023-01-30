@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../assets/css/adminlte.min.css">
+  <!--style personnalisé-->
+  <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <!--
 `body` tag options:
@@ -179,7 +181,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="index.php" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Accueil
@@ -187,7 +189,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
+            <a href="utilisateurs.php" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Utilisateurs
@@ -195,7 +197,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="utilisateurs.php" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 Categories
@@ -203,7 +205,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="categories.php" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Tickets
@@ -211,7 +213,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="commandes.php" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
                 Commande

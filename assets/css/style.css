@@ -1,0 +1,6 @@
+#div_user{
+    display: none;
+}
+.affiche{
+    display: block !important;
+}

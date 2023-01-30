@@ -77,7 +77,6 @@ include('inc/header.php');
                             echo '<td>'.$commande->commande_montant.'</td>';
                             echo '<td>'.$commande->commande_date.'</td>';
                             echo'</tr>';
-                
                             }
                           }
                           else
