@@ -48,8 +48,9 @@ switch($_GET['e'])
         break;
 
         case 'ajoutUser':
-
-if(!empty($_POST['email']) && !empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['password']) &&!empty($_POST['credit']))
+            if(!verifAdmin()) exit;
+    
+            if(!empty($_POST['email']) && !empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['password']) &&!empty($_POST['credit']))
             {
                 $verif = $db->prepare('SELECT client_id FROM `table_client` WHERE client_email = :email');
                 $verif->bindParam(':email',$_POST['email'],PDO::PARAM_STR);
@@ -99,6 +100,7 @@ if(!empty($_POST['email']) && !empty($_POST['nom']) && !empty($_POST['prenom']) 
             break;
 
             case 'editUser':
+                if(!verifAdmin()) exit;
 
                 // si on a bien un id qui est passé
                 if(!empty($_GET['id']))
@@ -176,6 +178,7 @@ if(!empty($_POST['email']) && !empty($_POST['nom']) && !empty($_POST['prenom']) 
             
                 break;
                 case 'deluser':
+                    if(!verifAdmin()) exit;
                     if(!empty($_GET['id']))
                     {
                         $del_user = $db->prepare('DELETE FROM `table_client` WHERE client_id = :id ');
