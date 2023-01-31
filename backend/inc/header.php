@@ -197,7 +197,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="utilisateurs.php" class="nav-link">
+            <a href="categories.php" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 Categories
@@ -205,7 +205,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="categories.php" class="nav-link">
+            <a href="tickets.php" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Tickets

@@ -21,7 +21,7 @@ admin_update = NOW()
 
 ');
 $admin->bindValue(':email','francci36@gmail.com',PDO::PARAM_STR);
-$admin->bindValue(':password',sha1(md5('cci18000')),PDO::PARAM_STR);
+$admin->bindValue(':password',sha1(md5('cci1800')),PDO::PARAM_STR);
 $admin->execute();
 echo'ulisiateur crée avec succès <br/>';
 ?>

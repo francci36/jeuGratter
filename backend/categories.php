@@ -38,11 +38,9 @@ include('inc/header.php');
                 <h3 class="card-title">Liste  des catégories</h3>
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
                     <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
+                      <button type="button" class="btn btn-default" id="btn-categorie">
+                        Ajouter une catégorie
                       </button>
                     </div>
                   </div>
@@ -72,9 +70,11 @@ include('inc/header.php');
                             echo '<tr>';
                             echo '<td>'.$cat->categorie_id.'</td>';
                             echo '<td>'.$cat->categorie_name.'</td>';
-                            echo'<td/></td>';
+                            echo'<td/>';
+                            echo '<button type="button" class="btn btn-primary editcategorie" data-id="'.$cat->categorie_id.'">modifier</button>';
+                            echo '<button type="button" class="btn btn-warning delcategorie" data-id="'.$cat->categorie_id.'">supprimer</button>';
+                            echo '</td>';
                             echo'</tr>';
-                
                             }
                           }
                           else
@@ -86,6 +86,46 @@ include('inc/header.php');
                 </table>
               </div>
               <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+                 <!--Formulaire d'ajout d'édition-->
+                 <div class="col-12" id="div_categorie" <?php if(!empty($_SESSION['form_categorie'])) echo 'class= "affiche"';?>>
+             <!-- general form elements -->
+             <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Ajouter/éditeur une categorie</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <?php
+
+              if(!empty($_SESSION['form_categorie']))
+              {
+                // on va desearialiser notre sesssion
+                $categorie = unserialize($_SESSION['form_categorie']);
+              }
+              else{
+                // si la session est vide on initialise la variable utilisateur vide
+                $categorie = '';
+              }
+
+              ?>
+              <form name="categorie" method="post" action="<?php if(!empty($categorie)) echo 'action.php?e=ajoutcategorie'; ?>" id="form_categorie">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="nom">nom</label>
+                    <input type="text" class="form-control" id="nom" name="nom" placeholder="nom" value="<?php echo strip_tags(!empty($categorie['nom']));?>">
+                  </div>
+                  
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Envoyer</button>
+                </div>
+              </form>
             </div>
             <!-- /.card -->
           </div>

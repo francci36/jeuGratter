@@ -198,6 +198,204 @@ switch($_GET['e'])
                     }
                     header('location:utilisateurs.php?message='.urlencode($message));
                     exit;
+
+                    break;
+                
+                        case 'printcategorie':
+
+                            if(!verifAdmin())exit;
+                            if(!empty($_GET['id']))
+                            {
+                                $cat = $db->prepare('SELECT  * FROM `table_categorie` WHERE categorie_id = :id');
+                                $cat->bindParam(':id',$_GET['id'],PDO::PARAM_INT);
+                                $cat->execute();
+                                // on vérie si une catégorie est retourné
+                                if($cat->rowCount() == 1)
+                                {
+                                    $categorie = $cat->fetch(PDO::FETCH_OBJ);
+                                    echo json_encode($categorie);
+                                }
+                            }
+
+                            break;
+
+                        case 'ajoutcategorie':
+
+                            if(!verifAdmin())exit;
+                            if(!empty($_POST['nom']))
+                            {
+                                $cat_add =$db->prepare('INSERT INTO `table_categorie` SET categorie_name = :nom');
+                                $cat_add->bindValue(':nom',$_POST['nom'],PDO::PARAM_STR);
+                                    if($cat_add->execute())
+                                    {
+                                        $message = 'catégorie ajoutée avec succès';
+                                    }
+                                    else
+                                    {
+                                        $_SESSION['form_categorie'] = serialize($_POST);
+                                        $message = 'une erreur est survenu lors de l\'ajout';
+                                    }  
+                            }
+                            else
+                            {
+                                $message = 'vous devez indiquer le nom de la categorie';
+                            }
+                            header('location:categories.php?message='.urlencode($message));
+                            exit;
+                            break;
+                            
+
+                        case 'editcategorie':
+                            
+                            if(!verifAdmin()) exit;
+                            if(!empty($_GET['id']))
+                            {
+                            if(!empty($_POST['nom']))
+                                {
+                                    $cat_edit =$db->prepare('UPDATE `table_categorie` SET categorie_name = :nom WHERE categorie_id = :id');
+                                    $cat_edit->bindValue(':id',$_GET['id'],PDO::PARAM_INT);
+                                    $cat_edit->bindValue(':nom',$_POST['nom'],PDO::PARAM_STR);
+                                    if($cat_edit->execute())
+                                    {
+                                        $message = 'catégorie modifié avec succès';
+                                    }
+                                    else
+                                    {
+                                            $_SESSION['form_categorie'] = serialize($_POST);
+                                            $message = 'une erreur est survenu lors de l\'edition';
+                                    }
+                                    
+                                    
+                                }
+                                else
+                                {
+                                            $message = 'veuillez indiquer une categorie';
+                                }
+                               
+                            }
+                            else  
+                            {
+                                $message = "t'as rien à faire ici";
+                            }
+                                
+                                header('location:categories.php?message='.urlencode($message));
+                                exit;
+
+                                break;
+
+                        case 'delcategorie':
+
+                            if(!verifAdmin())exit;
+                            if(!empty($_GET['id']))
+                            {
+                                $cat_del = $db->prepare('DELETE FROM `table_categorie` WHERE categorie_id = :id ');
+                                $cat_del->bindValue(':id',$_GET['id'],PDO::PARAM_INT);
+                                if($cat_del->execute())
+                                {
+                                    $message = 'categorie supprimé avec succès';
+                                }
+                                else
+                                {
+                                    $message = 'erreur de suppression';
+                                }
+                            }
+                            else
+                            {
+                                $message = 'tu n\'as rien à faire ici';
+                            }
+                            
+                            header('location:categories.php?message='.urlencode($message));
+
+                            break;
+                            exit;
+
+                            case 'ajoutticket':
+
+                                if(!verifAdmin())exit;
+                                if(!empty($_POST['categorie']) && !empty($_POST['nom'])  && !empty($_POST['prix'])  && !empty($_POST['nombre']))
+                                {
+                                    $ticket_add = $db->prepare('INSERT INTO `table_ticket` SET
+                                                                categorie_id = :id,
+                                                                ticket_name = :nom,
+                                                                prix_ticket = :prix,
+                                                                nb_ticket = :nombre
+                                                                ');
+                                     $ticket_add->bindValue(':id',$_POST['categorie'],PDO::PARAM_INT);
+                                    $ticket_add->bindValue(':nom',$_POST['nom'],PDO::PARAM_STR);
+                                     $ticket_add->bindValue(':prix',$_POST['prix'],PDO::PARAM_INT);
+                                     $ticket_add->bindValue(':nombre',$_POST['nombre'],PDO::PARAM_INT);
+                                    if($ticket_add->execute())
+                                    {
+                                        $id_ticket = $db->lastInsertId();
+                                        // on boucle les parties youpi
+                                        $k = 0; // k c'est la clés
+                                        foreach($_POST['number'] as $nb)
+                                        {
+                                            // on boucle sur la valeur  de number
+                                            for($i=0;$i<=$_POST['number'][$k];$i++)
+                                            {
+                                               // echo $_POST['valeur_partie'][$k];
+                                                $partie_add = $db->prepare('INSERT INTO `table_partie` SET
+                                                partie_id = :id,
+                                                valeur_partie = :valeur,
+                                                partie_date = CURDATE(),
+                                                partie_etat = "0"
+                                                ');
+                                                 $partie_add->bindValue(':id',$id_ticket,PDO::PARAM_INT);
+                                                 $partie_add->bindValue(':valeur',$_POST['valeur'][$k],PDO::PARAM_INT);
+                                                $partie_add->execute();
+                                            }
+                                            $k++;
+                                        }
+                                        $message = 'ticket ajouté avec succès';
+                                    }
+                                    else
+                                    {
+                                        $message = 'erreur avec le ticket';
+                                        $_SESSION['form_ticket'] = serialize($_POST);
+                                    }
+                                                                
+                                }
+                                else
+                                {
+                                    
+                                    $message = "vous devez saisir l'ensemble des champs";
+                                    $_SESSION['form_ticket'] = serialize($_POST);
+                                }
+                                header('location:tickets.php?='.urlencode($message));
+
+
+                                break;
+
+                                exit;
+
+                                case 'delticket':
+                                    if(!verifAdmin()) exit;
+                                    if(!empty($_GET['id']))
+                                    {
+                                        $del_partie = $db->prepare('DELETE FROM `table_partie` WHERE ticket_id = :id ');
+                                        $del_partie->bindValue(':id',$_GET['id'],PDO::PARAM_INT);
+                                        $del_partie->execute();
+                                        $del_ticket = $db->prepare('DELETE FROM `table_ticket` WHERE partie_id = :id ');
+                                        $del_ticket->bindValue(':id',$_GET['id'],PDO::PARAM_INT);
+                                        if($del_ticket->execute())
+                                        
+                                        {
+                                            $message = 'ticket supprimé avec succès';
+                                        }
+                                        else
+                                        {
+                                            $message = 'erreur lors dela suppression du ticket';
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $message = "tu n'as rien à faire ici";
+                                    }
+                                    header('location:tickets.php?message='.urlencode($message));
+                                    exit;
+                
+                                    break;
 }
 
         
