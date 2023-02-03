@@ -15,9 +15,37 @@ class ticket{
         $req->execute();
         if($req->rowCount() == 1)
         {
-            return $req->fetch(PDO::FETCH_OBJ);
+            //return $req->fetch(PDO::FETCH_OBJ);
+            $this->id = $id;
+            $obj = $req->fetch(PDO::FETCH_OBJ);
+            $this->id = $obj->ticket_id;
+            $this->categorie = $obj->categorie_id;
+            $this->nom = $obj->ticket_nom;
+            $this->prix = $obj->ticket_prix;
+            $this->nombre = $obj->ticket_nombre;
         }
+
     }
+    public function getCategorie()
+    {
+        
+    }
+    public function getId()
+        {
+            return $this->id;
+        }
+        public function getNom()
+        {
+            return $this->nom;
+        }
+        public function getPrix()
+        {
+            return $this->prix;
+        }
+        public function getNombre()
+        {
+            return $this->nombre;
+        }
     public  function setCategorie($categorie)
     {
         $this->categorie = $categorie;
