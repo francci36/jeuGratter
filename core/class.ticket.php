@@ -10,7 +10,7 @@ class ticket{
     public function __construct($id='')
     {
         global $db;
-        $req = $db->prepare('SELECT * FROM `table_ticket` WERE ticket_id = :id');
+        $req = $db->prepare('SELECT * FROM `table_ticket` WERE `ticket_id` = :id');
         $req->bindParam(':id',$id,PDO::PARAM_INT);
         $req->execute();
         if($req->rowCount() == 1)
