@@ -15,4 +15,5 @@ $tpl->assign('message',$message);
 $tpl->assign('nom',strip_tags($_GET['nom']));
 $tpl->assign('prenom',strip_tags($_POST['prenom']));
 $tpl->assign('email',strip_tags($_POST['email']));
+$tpl->assign('credit',null);
 $tpl->display('inscription.tpl');

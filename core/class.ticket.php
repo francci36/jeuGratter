@@ -1,5 +1,5 @@
 <?php
-require('db-inc.php');
+require_once('config.php');
 class ticket{
     public $id;
     public $categorie;
@@ -120,6 +120,21 @@ class ticket{
         return true;
         else
         return false;
+       }
+       // methode qui affiche tout les tickets
+       public static function Liste()
+       {
+        global $db;
+        $req = $db->prepare('SELECT * FROM `table_ticket` ORDER BY ticket_prix ASC');
+        $req->execute();
+        // si on a une ligne ou plus
+        if($req->rowCount() >=1)
+        {
+            // on retourne l'esemble des lignes
+            return $req->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else
+            return false;
        }
     
 }

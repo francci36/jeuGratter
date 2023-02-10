@@ -19,5 +19,6 @@
                     {/if}
                 </ul>
             </nav>
+            <p>Credit: {$credit}</p>
         </header>
     </body>
