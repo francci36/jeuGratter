@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.3.0, created on 2023-02-10 10:18:33
+/* Smarty version 4.3.0, created on 2023-02-10 11:06:06
   from 'C:\Users\sousadossantos\Documents\jeuTickets\templates\header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.3.0',
-  'unifunc' => 'content_63e619f93081b9_59378247',
+  'unifunc' => 'content_63e6251eb03140_46321713',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ac1352159ebef04ebd3db91e093f321e03857e0e' => 
     array (
       0 => 'C:\\Users\\sousadossantos\\Documents\\jeuTickets\\templates\\header.tpl',
-      1 => 1675941350,
+      1 => 1676026683,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_63e619f93081b9_59378247 (Smarty_Internal_Template $_smarty_tpl) {
+function content_63e6251eb03140_46321713 (Smarty_Internal_Template $_smarty_tpl) {
 ?><html>
     <head>
         <title><?php echo $_smarty_tpl->smarty->ext->configLoad->_getConfigVariable($_smarty_tpl, 'titrepage');?>
@@ -53,6 +53,8 @@ function content_63e619f93081b9_59378247 (Smarty_Internal_Template $_smarty_tpl)
                     <?php }?>
                 </ul>
             </nav>
+            <p>Credit: <?php echo $_smarty_tpl->tpl_vars['credit']->value;?>
+</p>
         </header>
     </body>
 <?php }

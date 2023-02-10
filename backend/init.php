@@ -1,27 +1,25 @@
 <?php
 exit;
 require_once('../config.php');
-$sql = " CREATE TABLE IF NOT EXISTS `table_admin`
-( 
-`admin_id` INT(10) NOT NULL AUTO_INCREMENT,
-`admin_email` VARCHAR(150) COLLATE utf8_general_ci NOT NULL,
-`admin_password` VARCHAR(200) COLLATE utf8_general_ci NOT NULL,
-`admin_date` DATETIME NOT NULL,
-`admin_update` DATETIME NOT NULL,
-PRIMARY KEY(`admin_id`)
+$sql = "CREATE TABLE IF NOT EXISTS `Table_Admin`(
+        `Admin_ID` INT(10) NOT NULL AUTO_INCREMENT,
+        `Admin_Email` VARCHAR(150) COLLATE utf8_general_ci NOT NULL,
+        `Admin_Password` VARCHAR(200) COLLATE utf8_general_ci NOT NULL,
+        `Admin_Date` DATETIME NOT NULL,
+        `Admin_Update` DATETIME NOT NULL,
+        PRIMARY KEY(`Admin_ID`)
 )";
-// on execute la requette
+// On exécute la requête
 $db->exec($sql);
-echo 'Database table_admin créee <br/>';
-$admin = $db->prepare('INSERT INTO `table_admin` SET
-admin_email = :email,
-admin_password = :password,
-admin_date = NOW(),
-admin_update = NOW()
-
-');
-$admin->bindValue(':email','francci36@gmail.com',PDO::PARAM_STR);
-$admin->bindValue(':password',sha1(md5('cci1800')),PDO::PARAM_STR);
+echo 'Database Table_Admin créée<br />';
+$admin = $db->prepare('INSERT INTO `Table_Admin` SET
+                Admin_Email = :email,
+                Admin_Password = :password,
+                Admin_Date = NOW(),
+                Admin_Update = NOW()
+        ');
+$admin->bindValue(':email','florian.mancieri@campuscci18.fr',PDO::PARAM_STR);
+$admin->bindValue(':password',sha1(md5('cci18000')),PDO::PARAM_STR); 
 $admin->execute();
-echo'ulisiateur crée avec succès <br/>';
+echo 'Utilisateur créé avec succès<br />';       
 ?>

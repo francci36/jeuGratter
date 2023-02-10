@@ -1,10 +1,10 @@
 <?php
 require_once('../config.php');
-// on verifie si utilisateur connecté
+// On vérifie si l'utilisateur est connecté
 if(!verifAdmin())
 {
-    //si l'utilisateur n'est pas connecté
-    $message = 'veuillez vous connecter';
+    // Si l'utilisateur n'est pas connecté
+    $message = 'Veuillez vous connecter';
     header('location:login.php?msg='.urlencode($message));
     exit;
 }
@@ -28,6 +28,7 @@ include('inc/header.php');
         </div>
       </div><!-- /.container-fluid -->
     </section>
+
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -35,7 +36,8 @@ include('inc/header.php');
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Liste  des catégories</h3>
+                <h3 class="card-title">Liste des catégories</h3>
+
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
                     <div class="input-group-append">
@@ -58,29 +60,29 @@ include('inc/header.php');
                   </thead>
                   <tbody>
                     <?php
-                   // on va chercher les categories dans la BDD
-                      $liste_categories = $db->query('SELECT * FROM `table_categorie`');
-                      // on verifie qu'on a au moins une catégorie
-                      if( $liste_categories->rowCount() >= 1)
+                    // On va chercher les catégories dans la BDD
+                    $liste_categories = $db->query('SELECT * FROM `Table_Categorie`');
+                    // On vérifie qu'on a au moins une catégorie
+                    if($liste_categories->rowCount() >= 1)
+                    {
+                        // On créer l'objet catégorie
+                        $categories = $liste_categories->fetchAll(PDO::FETCH_OBJ);
+                        foreach($categories as $cat)
                         {
-                          // on crée l'objet catégorie
-                          $categories = $liste_categories->fetchALL(PDO::FETCH_OBJ);
-                          foreach($categories as $cat)
-                          {
                             echo '<tr>';
-                            echo '<td>'.$cat->categorie_id.'</td>';
-                            echo '<td>'.$cat->categorie_name.'</td>';
-                            echo'<td/>';
-                            echo '<button type="button" class="btn btn-primary editcategorie" data-id="'.$cat->categorie_id.'">modifier</button>';
-                            echo '<button type="button" class="btn btn-warning delcategorie" data-id="'.$cat->categorie_id.'">supprimer</button>';
+                            echo '<td>'.$cat->Categorie_ID.'</td>';
+                            echo '<td>'.$cat->Categorie_Nom.'</td>';
+                            echo '<td>';
+                            echo '<button type="button" class="btn btn-primary editcategorie" data-id="'.$cat->Categorie_ID.'">Modifier</button>';
+                            echo '<button type="button" class="btn btn-danger delcategorie" data-id="'.$cat->Categorie_ID.'">Supprimer</button>';
                             echo '</td>';
-                            echo'</tr>';
-                            }
-                          }
-                          else
-                          {
-                            echo '<div class="btn btn-warning">Aucune categorie</div>';
-                          }
+                            echo '</tr>';
+                        }
+                    }
+                    else
+                    {
+                        echo '<div class="btn btn-warning">Aucune catégorie</div>';
+                    }
                     ?>
                   </tbody>
                 </table>
@@ -89,55 +91,51 @@ include('inc/header.php');
             </div>
             <!-- /.card -->
           </div>
-                 <!--Formulaire d'ajout d'édition-->
-                 <div class="col-12" id="div_categorie" <?php if(!empty($_SESSION['form_categorie'])) echo 'class= "affiche"';?>>
-             <!-- general form elements -->
-             <div class="card card-primary">
+          <!-- Formulaire d'ajout/édition -->
+          <div class="col-12" id="div_categorie" <?php if(!empty($_SESSION['form_categorie'])) echo 'class="affiche"'; ?>>
+              <!-- general form elements -->
+            <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Ajouter/éditeur une categorie</h3>
+                <h3 class="card-title">Ajouter/éditer une catégorie</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
               <?php
-
               if(!empty($_SESSION['form_categorie']))
               {
-                // on va desearialiser notre sesssion
+                // On va déserialiser notre session
                 $categorie = unserialize($_SESSION['form_categorie']);
               }
-              else{
-                // si la session est vide on initialise la variable utilisateur vide
+              else
+              {
+                // Si la session est vide on initialise la variable categorie vide.
                 $categorie = '';
               }
-
               ?>
-              <form name="categorie" method="post" action="<?php if(!empty($categorie)) echo 'action.php?e=ajoutcategorie'; ?>" id="form_categorie">
+              <form name="categorie" method="post" action="<?php if(!empty($categorie)) echo 'action.php?e=ajoutCategorie'; ?>" id="form_categorie">
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="nom">nom</label>
-                    <input type="text" class="form-control" id="nom" name="nom" placeholder="nom" value="<?php echo strip_tags(!empty($categorie['nom']));?>">
+                    <label for="nom">Nom</label>
+                    <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" value="<?php if(!empty($categorie['nom'])) echo strip_tags($categorie['nom']); ?>">
                   </div>
-                  
-
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Envoyer</button>
+                  <button type="submit" class="btn btn-primary" name="submit">Envoyer</button>
                 </div>
               </form>
             </div>
             <!-- /.card -->
           </div>
-        </div>
-        <!-- /.row -->
-
+          <!-- Fin formulaire ajout/édition -->
         </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
+  <!-- /.content-wrapper -->
 
 <?php
 include('inc/footer.php');

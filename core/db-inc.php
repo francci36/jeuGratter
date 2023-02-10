@@ -1,9 +1,9 @@
-<?php 
+<?php
 $DB_HOST = 'localhost';
 $DB_USER ='root';
-$DB_PASSWORD = '';
-$DB_NAME = 'ticket_gratter';
-// cree la fonction pour se connecter a la base de données
+$DB_PASSWORD='';
+$DB_NAME = 'ticket';
+// On créer la fonction pour se connecter à la BDD
 function pdo_connect()
 {
     global $DB_HOST;
@@ -12,10 +12,10 @@ function pdo_connect()
     global $DB_NAME;
     try{
         return new PDO('mysql:host='.$DB_HOST.';dbname='.$DB_NAME.';charset=utf8',$DB_USER,$DB_PASSWORD);
-    }catch (PDOException $exception) {
-        exit('impossible de se connecter a la BDD');
+    } catch(PDOException $exception) {
+        exit('Impossible de se connecter à la BDD');
     }
 }
-// on se connecte a la BDD
+// On se connecte à la BDD
 $db = pdo_connect();
 ?>

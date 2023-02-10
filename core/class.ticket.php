@@ -1,6 +1,6 @@
 <?php
 require_once('config.php');
-class ticket{
+class Ticket{
     public $id;
     public $categorie;
     public $nom;
@@ -10,67 +10,69 @@ class ticket{
     public function __construct($id='')
     {
         global $db;
-        $req = $db->prepare('SELECT * FROM `table_ticket` WERE `ticket_id` = :id');
-        $req->bindParam(':id',$id,PDO::PARAM_INT);
-        $req->execute();
-        if($req->rowCount() == 1)
+        if($id)
         {
-            //return $req->fetch(PDO::FETCH_OBJ);
-            $this->id = $id;
-            $obj = $req->fetch(PDO::FETCH_OBJ);
-            $this->id = $obj->ticket_id;
-            $this->categorie = $obj->categorie_id;
-            $this->nom = $obj->ticket_nom;
-            $this->prix = $obj->ticket_prix;
-            $this->nombre = $obj->ticket_nombre;
+            $req = $db->prepare('SELECT * FROM `Table_Ticket` WHERE Ticket_ID = :id');
+            $req->bindParam(':id',$id,PDO::PARAM_INT);
+            $req->execute();
+            if($req->rowCount() == 1)
+            {
+                $obj = $req->fetch(PDO::FETCH_OBJ);
+                $this->id = $obj->Ticket_id;
+                $this->categorie = $obj->Ticket_Categorie_ID;
+                $this->nom = $obj->Ticket_Nom;
+                $this->prix = $obj->Ticket_Prix;
+                $this->nombre = $obj->Ticket_Nombre;
+            }
         }
-
+        
     }
     public function getCategorie()
     {
-        
+        return $this->categorie;
+    }
+    public function getNom()
+    {
+        return $this->nom;
     }
     public function getId()
-        {
-            return $this->id;
-        }
-        public function getNom()
-        {
-            return $this->nom;
-        }
-        public function getPrix()
-        {
-            return $this->prix;
-        }
-        public function getNombre()
-        {
-            return $this->nombre;
-        }
-    public  function setCategorie($categorie)
+    {
+        return $this->id;
+    }
+    public function getPrix()
+    {
+        return $this->prix;
+    }
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+    public function setCategorie($categorie)
     {
         $this->categorie = $categorie;
     }
-    public  function setnom($nom)
+    public function setNom($nom)
     {
-        $this->nom= $nom;
-    }
-    public  function setprix($prix)
+        $this->nom = $nom;
+    } 
+    public function setPrix($prix)
     {
         $this->prix = $prix;
     }
-    public  function setnombre($nombre)
+    public function setNombre($nombre)
     {
         $this->nombre = $nombre;
     }
+    // Méthode pour enregistrer l'objet dans la BDD
     public function register()
     {
         global $db;
-        $req = $db->prepare('INSERT INTO `table_ticket` SET 
-                            categorie_id = :categorie,
-                            ticket_name = :nom,
-                            prix_ticket = :prix,
-                            nb_ticket= :nombre
-        ');
+        $req = $db->prepare('INSERT INTO `Table_Ticket` SET
+                                Ticket_Categorie_ID = :categorie,
+                                Ticket_Nom          = :nom,
+                                Ticket_Prix         = :prix,
+                                Ticket_Nombre       = :nombre
+                            ');
         $req->bindValue(':categorie',$this->categorie,PDO::PARAM_INT);
         $req->bindValue(':nom',$this->nom,PDO::PARAM_STR);
         $req->bindValue(':prix',$this->prix,PDO::PARAM_INT);
@@ -85,56 +87,54 @@ class ticket{
             return false;
         }
     }
-    // //methode pour modifier le ticket
-    public function updatePartie()
+    // Méthode pour modifier le ticket en BDD
+    public function update()
     {
         global $db;
-        $req = $db->prepare('UPDATE `table_ticket`SET
-                            categorie_id = :categorie,
-                            ticket_name = :nom,
-                            prix_ticket = :prix,
-                            nb_ticket= :nombre
-                            WHERE categorie_id= :id
-        
-        ');
+        $req = $db->prepare('UPDATE `Table_Ticket` SET
+                            Ticket_Categorie_ID = :categorie,
+                            Ticket_Nom = :nom,
+                            Ticket_Prix = :prix,
+                            Ticket_Nombre = :nombre
+                            WHERE Ticket_ID = :id
+                        ');
         $req->bindValue(':categorie',$this->categorie,PDO::PARAM_INT);
         $req->bindValue(':nom',$this->nom,PDO::PARAM_STR);
-        $req->bindValue(':prix',$this->prix,PDO::PARAM_STR);
+        $req->bindValue(':prix',$this->prix,PDO::PARAM_INT);
         $req->bindValue(':nombre',$this->nombre,PDO::PARAM_INT);
         $req->bindValue(':id',$this->id,PDO::PARAM_INT);
         if($req->execute())
-        
             return true;
-            else
-            return false;
-        
-     
-        }
-       //methode pour supprrimer le ticket
-       public function delete()
-       {
+        else
+            return false;            
+    }
+    // Méthode pour supprimer le ticket
+    public function delete()
+    {
         global $db;
-        $req = $db->prepare('DELETE `table_ticket`WHERE ticket_id= :id');
+        $req = $db->prepare('DELETE FROM `Table_Ticket` WHERE Ticket_ID = :id');
         $req->bindValue(':id',$this->id,PDO::PARAM_INT);
         if($req->execute())
-        return true;
+            return true;
         else
-        return false;
-       }
-       // methode qui affiche tout les tickets
-       public static function Liste()
-       {
+            return false;
+
+    }
+    // Méthode qui affiche tout les tickets
+    public static function liste()
+    {
         global $db;
-        $req = $db->prepare('SELECT * FROM `table_ticket` ORDER BY ticket_prix ASC');
+        $req = $db->prepare('SELECT * FROM `Table_Ticket` ORDER BY Ticket_Prix ASC');
         $req->execute();
-        // si on a une ligne ou plus
-        if($req->rowCount() >=1)
+        // Si on a 1 ligne ou plus
+        if($req->rowCount() >= 1)
         {
-            // on retourne l'esemble des lignes
+            // On retourne l'ensemble des lignes
             return $req->fetchAll(PDO::FETCH_ASSOC);
         }
         else
             return false;
-       }
-    
+    }
+
 }
+?>

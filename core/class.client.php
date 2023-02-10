@@ -1,44 +1,48 @@
 <?php
-//require_once('config.php');
+require_once('config.php');
 class Client
 {
+    private $id;
     public $nom;
     public $prenom;
     public $email;
     public $password;
     public $credit;
-    public $id;
-    // contructeur de notre class
-    public function __construct($id ='',$args='')
+
+    // Constructeur de notre classe
+    public function __construct($id='',$args='')
     {
         global $db;
         if(!empty($id))
         {
-            $req = $db->prepare('SELECT * FROM `table_client` WHERE client_id = :id');
-            $req->bindParam(':id', $id, PDO::PARAM_INT);
-            if ($req->execute()) {
-                // si la requette s'execute correctement
-                if ($req->rowCount() == 1) {
-                    // on retourne l'objet user
+            $req = $db->prepare('SELECT * FROM `Table_Client` WHERE Client_ID = :id');
+            $req->bindParam(':id',$id,PDO::PARAM_INT);
+            // Si la requête s'éxécute correctement
+            if($req->execute())
+            {
+                // On regarde si il y a bien une ligne de retourné
+                if($req->rowCount() == 1)
+                {
+                    // On retourne l'objet user
                     $obj = $req->fetch(PDO::FETCH_OBJ);
-                    $this->id = $obj->client_id;
-                    $this->prenom = $obj->client_prenom;
-                    $this->nom = $obj->client_name;
-                    $this->email = $obj->client_email;
-                    $this->password = $obj->client_password;
-                    $this->credit = $obj->client_credit;
-                } 
-                else 
+                    $this->id = $obj->Client_ID;
+                    $this->prenom = $obj->Client_Prenom;
+                    $this->nom = $obj->Client_Nom;
+                    $this->email = $obj->Client_Email;
+                    $this->password = $obj->Client_Password;
+                    $this->credit = $obj->Client_Credit;
+                }
+                else
                 {
                     return false;
                 }
-            } 
-            else 
+            }
+            else
             {
                 return false;
-            }
+            } 
         }
-        elseif(!empty($args))
+        else if(!empty($args))
         {
             $this->nom = $args['nom'];
             $this->prenom = $args['prenom'];
@@ -55,8 +59,8 @@ class Client
                 return false;
             }
         }
+       
     }
-        
     public function setNom($nom)
     {
         $this->nom = $nom;
@@ -79,18 +83,18 @@ class Client
     }
     private function generatePassword()
     {
-        $str = 'azertyuiopqsdfghjklmwxcvbn123456789AZERTYUIOPQSDFGHJKLMWXCVBN';
-        // on transforme la chaine de caractère en tableau
+        $str = 'azertyuiopqsdfghjklmwxcvbn1234567890AZERTYUIOPQSDFGHJKLMWXCVBN';
+        // On transforme la chaine de caractère en tableau
         $tab = str_split($str);
-        //on genere la longueur du mmot de passe
+        // On génère la longueur du mot de passe entre 12 et 16
         $long = rand(12,16);
-        // on fait une boucle sur la longueur du mdp
+        // On fait une boucle sur la longueur du mdp
         $mdp = '';
         for($i=0;$i<$long;$i++)
         {
-            // on ajoute les caractere au hasard avec array_rand
+            // on ajoute les caractères au hasard avec array_rand
             $str_rand = array_rand($tab);
-            $mdp.=$tab[$str_rand];
+            $mdp.= $tab[$str_rand];
         }
         return $mdp;
     }
@@ -98,118 +102,120 @@ class Client
     {
         return $this->nom;
     }
-    
     public function getPrenom()
     {
         return $this->prenom;
     }
-    
     public function getEmail()
     {
         return $this->email;
     }
-    
     public function getCredit()
     {
         return $this->credit;
     }
+    // Méthode pour inscrire un client
     public function inscrire()
     {
         global $db;
-        // on va vérifier si le client n'est pas déjà dans la bdd
-        $req = $db->prepare('SELECT `client_id` FROM `table_client`WHERE client_email = :email');
-        $req->bindParam(':email',$this->email,PDO::PARAM_INT);
+        // On va vérifier si le client n'est pas déjà dans la BDD
+        $req = $db->prepare('SELECT Client_ID FROM `Table_Client` WHERE Client_Email = :email');
+        $req->bindParam(':email',$this->email,PDO::PARAM_STR);
         $req->execute();
-        if($req->rowCount() ==0)
+        // Si il n'y a pas de ligne retourné
+        if($req->rowCount() == 0)
         {
-            // on va pouvoir les inserer notre client dans la bdd
-            $req2 = $db->prepare('INSERT INTO `table_client`SET
-                                client_name = :nom,
-                                client_prenom = :prenom,
-                                client_email = :email,
-                                client_password = :password,
-                                client_credit = :credit
-            ');
+            // On va pouvoir insérer notre client dans la BDD
+            $req2 = $db->prepare('INSERT INTO `Table_Client` SET
+                                    Client_Nom = :nom,
+                                    Client_Prenom = :prenom,
+                                    Client_Email = :email,
+                                    Client_Password = :password,
+                                    Client_Credit = :credit
+                                ');
             $req2->bindValue(':nom',$this->nom,PDO::PARAM_STR);
             $req2->bindValue(':prenom',$this->prenom,PDO::PARAM_STR);
             $req2->bindValue(':email',$this->email,PDO::PARAM_STR);
-            $req2->bindValue(':passwword',self::generatePassword($this->password),PDO::PARAM_STR);
-            $req2->bindValue(':credit',$this->credit,PDO::PARAM_INT);
+            $req2->bindValue(':password',self::generatePassword($this->password),PDO::PARAM_STR);
+            $req2->bindValue(':credit',$this->credit,PDO::PARAM_INT);  
             if($req2->execute())
             {
-                $last_id =$db->lastInsertId();
+                $last_id = $db->lastInsertId();
                 return $last_id;
             }
             else
             {
                 return false;
-            }
+            }                  
+        }
+        else
+        {
+            return false;
         }
     }
     public function editer()
     {
         global $db;
-        $req = $db->prepare('SELECT `client_id` FROM `table_client`WHERE client_email = :email AND client_id != :id');
+        $req = $db->prepare('SELECT Client_ID FROM `Table_Client` WHERE Client_Email = :email AND Client_ID != :id');
         $req->bindParam(':id',$this->id,PDO::PARAM_INT);
         $req->bindParam(':email',$this->email,PDO::PARAM_STR);
         $req->execute();
-        //si on trouve pas d'email enregistré
+        // Si on trouve pas d'email enregistré
         if($req->rowCount() == 0)
         {
-            $req2 = $db->prepare('UPDATE `table_client`SET
-                                client_nom = :nom,
-                                client_prenom = :prenom,
-                                client_email = : email,
-                                client_credit = :credit
-                                WHERE client_id = :id
-            ');
+            $req2 = $db->prepare('UPDATE `Table_Client` SET
+                                    Client_Prenom = :prenom,
+                                    Client_Nom = :nom,
+                                    Client_Email = :email,
+                                    Client_Credit = :credit
+                                    WHERE Client_ID = :id
+                                ');
             $req2->bindValue(':id',$this->id,PDO::PARAM_INT);
-            $req2->bindValue(':nom',$this->nom,PDO::PARAM_STR);
             $req2->bindValue(':prenom',$this->prenom,PDO::PARAM_STR);
+            $req2->bindValue(':nom',$this->nom,PDO::PARAM_STR);
             $req2->bindValue(':email',$this->email,PDO::PARAM_STR);
             $req2->bindValue(':credit',$this->credit,PDO::PARAM_INT);
-            if($req->rowCount() == 0)
+            if($req2->execute())
             {
                 return true;
-            }
+            } 
             else
             {
                 return false;
-            }
+            }                   
         }
         else
         {
             return false;
         }
-        
     }
-    // fonction pour la connection
+    // Fonction pour la connection
     public static function getConnexion($email='',$password='')
     {
         global $db;
-        $req = null;
-        // on verifie si le mail et le mot de passe sont renseigné
+        // On vérifie si email et mot de passe sont renseigné
         if($email && $password)
         {
-            $req = $db->prepare('SELECT client_id, client_password FROM `table_client` WHERE client_email = :email AND client_password = :password');
-            $req->bindParam(':password', $password, PDO::PARAM_STR);
-            $req->bindParam(':email', $email, PDO::PARAM_STR);
+            $req = $db->prepare('SELECT Client_ID, Client_Password FROM `Table_Client` WHERE Client_Email = :email AND Client_Password = :password');
+            $req->bindParam(':email',$email,PDO::PARAM_STR);
+            $req->bindParam(':password',$password,PDO::PARAM_STR);
         }
-        // on verifie avec les cookies
-        elseif(!empty($_COOKIE['id']) && !empty($_COOKIE['password']))
+        // Sinon on vérifie avec les cookies
+        if(!empty($_COOKIE['id']) && !empty($_COOKIE['password']))
         {
-            $req = $db->prepare('SELECT client_id, client_password FROM `table_client` WHERE client_id = :id AND client_password = :password');
-            $req->bindParam(':id', $_COOKIE['id'], PDO::PARAM_INT);
-            $req->bindParam(':password', $_COOKIE['password'], PDO::PARAM_STR);
+            $req = $db->prepare('SELECT Client_ID, Client_Password FROM `Table_Client` WHERE Client_ID = :id AND Client_Password = :password');
+            $req->bindParam(':id',$_COOKIE['id'],PDO::PARAM_INT);
+            $req->bindParam(':password',$_COOKIE['password'],PDO::PARAM_STR);
         }
-        if(isset($req)  && $req->execute())
+        if(isset($req) && $req->execute())
         {
-            if($req->rowCount() == 1) 
+            // Si on a bien un utilisateur
+            if($req->rowCount() == 1)
             {
                 $obj = $req->fetch(PDO::FETCH_OBJ);
                 $_SESSION['connect'] = 1;
-                setcookie('id', $obj->client_id, (time()+86400));
-                setcookie('password', $obj->client_password, (time()+86400));
+                setcookie('id',$obj->Client_ID,(time()+86400));
+                setcookie('password',$obj->Client_Password,(time()+86400));
                 return true;
             }
             else
@@ -222,7 +228,5 @@ class Client
             return false;
         }
     }
-    
-   
 }
 ?>

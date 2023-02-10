@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../assets/css/adminlte.min.css">
-  <!--style personnalisé-->
+  <!-- Style personnalisé -->
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <!--
@@ -200,7 +200,7 @@
             <a href="categories.php" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
-                Categories
+                Catégories
               </p>
             </a>
           </li>
@@ -216,7 +216,7 @@
             <a href="commandes.php" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                Commande
+                Commandes
               </p>
             </a>
           </li>

@@ -1,10 +1,10 @@
 <?php
 require_once('../config.php');
-// on verifie si utilisateur connecté
+// On vérifie si l'utilisateur est connecté
 if(!verifAdmin())
 {
-    //si l'utilisateur n'est pas connecté
-    $message = 'veuillez vous connecter';
+    // Si l'utilisateur n'est pas connecté
+    $message = 'Veuillez vous connecter';
     header('location:login.php?msg='.urlencode($message));
     exit;
 }

@@ -1,5 +1,5 @@
-<!-- Main Footer -->
-<footer class="main-footer">
+  <!-- Main Footer -->
+  <footer class="main-footer">
     <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
@@ -24,8 +24,7 @@
 <script src="../assets/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../assets/js/pages/dashboard3.js"></script>
-<!--js personalisé-->
+<!-- Javascript personnalisé -->
 <script src="../assets/js/backend.js"></script>
 </body>
 </html>
-

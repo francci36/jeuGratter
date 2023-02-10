@@ -24,14 +24,19 @@
                 $req->execute();
                 if($req->rowCount() ==1)
                 {
-                    return $req->fetch(PDO::FETCH_OBJ);
+                    $obj = $req->fetch(PDO::FETCH_OBJ);
+                    $this->id = $obj->Partie_ID;
+                    $this->ticket = $obj->Partie_Ticket_ID;
+                    $this->valeur = $obj->Partie_Valeur;
+                    $this->date = $obj->Partie_Date;
+                    $this->etat = $obj->Partie_Etat;
                 }
             }
         }
 
         public function setTicket()
         {
-            $this->ticket = $this->getTicketID();
+            $this->ticket = $this->getID();
         }
         public function setValeur($valeur)
         {
@@ -46,7 +51,7 @@
             $this->etat = $etat;
         }   
 
-        public function register()
+        public function registerPartie()
         {
             global $db;
             $req = $db->prepare('   INSERT INTO `Table_Partie` SET
@@ -91,7 +96,7 @@
         {
             return $this->etat;
         }
-        // Méthode pour modifier la partie en BDD
+        // Méthode pour modifier le ticket en BDD
         public function updatePartie()
         {
             global $db;
@@ -115,26 +120,18 @@
                 return false;
             }
         }
-        // méthode pour update la date
+        // Méthode pour MAJ La date
         public function updateDate()
         {
             global $db;
-            $req = $db->prepare('   UPDATE `Table_Partie` SET
-                                    Partie_Date    = CURDATE()
-                                    WHERE Partie_ID     = :id
-                                ');
-            $req->bindValue(':id',$this->date,PDO::PARAM_INT);
+            $req = $db->prepare('UPDATE `Table_Partie` SET Partie_Date = CURDATE() WHERE Partie_ID = :id');
+            $req->bindValue(':id',$this->id,PDO::PARAM_INT);
             if($req->execute())
-            {
                 return true;
-            }
             else
-            {
                 return false;
-            }
-
         }
-        // Méthode pour supprimer une partie
+        // Méthode pour supprimr un ticket
         public function deletePartie()
         {
             global $db;

@@ -1,10 +1,10 @@
 <?php
 require_once('../config.php');
-// on verifie si utilisateur connecté
+// On vérifie si l'utilisateur est connecté
 if(!verifAdmin())
 {
-    //si l'utilisateur n'est pas connecté
-    $message = 'veuillez vous connecter';
+    // Si l'utilisateur n'est pas connecté
+    $message = 'Veuillez vous connecter';
     header('location:login.php?msg='.urlencode($message));
     exit;
 }
@@ -17,7 +17,7 @@ include('inc/header.php');
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Gestion des Tickets</h1>
+            <h1>Gestion des commandes</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -28,6 +28,7 @@ include('inc/header.php');
         </div>
       </div><!-- /.container-fluid -->
     </section>
+
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -35,7 +36,8 @@ include('inc/header.php');
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Liste  des Tickets</h3>
+                <h3 class="card-title">Liste des commandes</h3>
+
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
                     <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
@@ -54,35 +56,34 @@ include('inc/header.php');
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>client</th>
-                      <th>montant</th>
-                      <th>date</th>
-
+                      <th>Client</th>
+                      <th>Montant</th>
+                      <th>Date</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
-                   // on va chercher les categories dans la BDD
-                      $liste_commandes = $db->query('SELECT * FROM `table_commande` INNER JOIN `table_client` ON commande_client_id = client_id');
-                      // on verifie qu'on a au moins une catégorie
-                      if( $liste_tickets->rowCount() >= 1)
+                    // On va chercher les catégories dans la BDD
+                    $liste_commandes = $db->query('SELECT * FROM `Table_Commande` INNER JOIN `Table_Client` ON Commande_Client_ID = Client_ID');
+                    // On vérifie qu'on a au moins une catégorie
+                    if($liste_commandes->rowCount() >= 1)
+                    {
+                        // On créer l'objet catégorie
+                        $commandes = $liste_commandes->fetchAll(PDO::FETCH_OBJ);
+                        foreach($commandes as $commande)
                         {
-                          // on crée l'objet catégorie
-                          $commandes = $liste_commandes->fetchALL(PDO::FETCH_OBJ);
-                          foreach($commandes as $commande)
-                          {
                             echo '<tr>';
-                            echo '<td>'.$commande->commande_id.'</td>';
-                            echo '<td>'.$commande->client_prenom.''.$commande->client_name.'</td>';
-                            echo '<td>'.$commande->commande_montant.'</td>';
-                            echo '<td>'.$commande->commande_date.'</td>';
-                            echo'</tr>';
-                            }
-                          }
-                          else
-                          {
-                            echo '<div class="btn btn-warning">Aucune commande</div>';
-                          }
+                            echo '<td>'.$commande->Commande_ID.'</td>';
+                            echo '<td>'.$commande->Client_Prenom.' '.$commande->Client_Nom.'</td>';
+                            echo '<td>'.$commande->Commande_Montant.'</td>';
+                            echo '<td>'.$commande->Commande_Date.'</td>';
+                            echo '</tr>';
+                        }
+                    }
+                    else
+                    {
+                        echo '<div class="btn btn-warning">Aucune commande</div>';
+                    }
                     ?>
                   </tbody>
                 </table>
@@ -93,13 +94,11 @@ include('inc/header.php');
           </div>
         </div>
         <!-- /.row -->
-
-        </div>
-        <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
+  <!-- /.content-wrapper -->
 
 <?php
 include('inc/footer.php');
