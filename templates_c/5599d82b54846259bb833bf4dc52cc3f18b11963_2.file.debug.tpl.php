@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.3.0, created on 2023-02-10 10:18:33
+/* Smarty version 4.3.0, created on 2023-02-13 07:32:34
   from 'C:\Users\sousadossantos\Documents\jeuTickets\core\debug.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.3.0',
-  'unifunc' => 'content_63e619f94a6853_64677125',
+  'unifunc' => 'content_63e9e792e22a61_21066433',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5599d82b54846259bb833bf4dc52cc3f18b11963' => 
     array (
       0 => 'C:\\Users\\sousadossantos\\Documents\\jeuTickets\\core\\debug.tpl',
-      1 => 1675934963,
+      1 => 1676035713,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_63e619f94a6853_64677125 (Smarty_Internal_Template $_smarty_tpl) {
+function content_63e9e792e22a61_21066433 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\Users\\sousadossantos\\Documents\\jeuTickets\\core\\plugins\\modifier.debug_print_var.php','function'=>'smarty_modifier_debug_print_var',),));
 $_smarty_tpl->smarty->ext->_capture->open($_smarty_tpl, '_smarty_debug', 'debug_output', null);?>
     <!DOCTYPE html>
